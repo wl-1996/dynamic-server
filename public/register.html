@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="registerForm">
+      <div>
+        <label>用户名 <input type="text" name="name"/></label>
+      </div>
+      <div>
+        <label>密码<input type="password" name="password"/></label>
+      </div>
+      <div>
+        <button type="submit">注册</button>
+      </div>
+    </form>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      // 监听form表单的submit事件：
+      const $form = $("#registerForm"); //获取表单元素
+      $form.on("submit", e => {
+        e.preventDefault(); //阻止默认事件
+        const name = $form.find("input[name=name]").val(); //找到input里name=name的元素，获取他的值
+        const password = $form.find("input[name=password]").val();
+        console.log(name, password);
+        //获取到用户的name和password后发送ajax请求给服务器：
+        $.ajax({
+          method: "POST",
+          url: "/register",
+          contentType: "text/json;charset=utf-8",
+          data: JSON.stringify({ name: name, password: password })
+        }).then(
+          //发送完ajax请求后执行下面的操作，如果注册成功就跳转到登陆页面，如果注册失败就提示失败
+          () => {
+            alert("注册成功");
+            location.href = "./sign_in.html";
+          },
+          () => {
+            alert("注册失败");
+          }
+        );
+      });
+    </script>
+  </body>
+</html>
